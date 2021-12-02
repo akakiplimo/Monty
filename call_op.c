@@ -1,4 +1,4 @@
-#include "main.h"
+#include "monty.h"
 
 /**
  * call_op - checks ops against opcodes
@@ -11,7 +11,8 @@ void call_op(char *op, stack_t **stack, unsigned int line_number)
 {
 size_t i;
 instruction_t operations[] = {
-{"push", m_push},
+{"push", op_push},
+{"pall", op_pall},
 {NULL, NULL}
 };
 

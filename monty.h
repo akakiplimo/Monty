@@ -1,12 +1,15 @@
 #ifndef MONTY_H
 #define MONTY_H
+#define  _POSIX_C_SOURCE 200809L
+#define _DEFAULT_SOURCE
 
 #define STACK 0
 #define QUEUE 1
 
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
+#include <unistd.h>
 #include <ctype.h>
 
 /**
@@ -21,7 +24,7 @@ typedef struct var_s
 } var_t;
 
 /* variable structure to hold flag for queue or stack length */
-extern var_t var
+extern var_t var;
 
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
@@ -53,11 +56,13 @@ typedef struct instruction_s
   void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
+void free_stack(int status, void *arg);
+void free_lineptr(int status, void *arg);
+void myfile_close(int status, void *arg);
 void call_op(char *op, stack_t **stack, unsigned int line_number);
+
 stack_t *add_node(stack_t **stack, const int n);
-
-int check_isdigit(char *str);
 void op_push(stack_t **stack, unsigned int line_number);
-
+void op_pall(stack_t **stack, unsigned int line_number);
 
 #endif /* MONTY_H */
