@@ -1,30 +1,44 @@
 #include "monty.h"
 
 /**
- * call_op - checks ops against opcodes
- * @op: operation to check
- * @stack: double pointer to the beginning of the stack
- * @line_number: file line number
- * Return: void
+ * call_op - function in charge of calling opcodes
+ * @stack: stack given by main
+ * @str: string to compare
+ * @line_number: number of lines
+ *
+ * Return: nothing
  */
-void call_op(char *op, stack_t **stack, unsigned int line_number)
+void call_op(stack_t **stack, char *str, unsigned int line_number)
 {
-size_t i;
-instruction_t operations[] = {
-{"push", op_push},
-{"pall", op_pall},
-{NULL, NULL}
-};
+  int i = 0;
+  instruction_t op[] = {
+    { "push", push },
+    { "pall", pall },
+    { NULL, NULL }
+  };
 
-for (i = 0; operations[i].opcode != NULL; i++)
-{
-if (strcmp(operations[i].opcode, op) == 0)
-{
-operations[i].f(stack, line_number);
-return;
-}
-}
+  if (!strcmp(str, "stack"))
+    {
+      global.data_struct = 1;
+      return;
+    }
+  if (!strcmp(str, "queue"))
+    {
+      global.data_struct = 0;
+      return;
+    }
 
-fprintf(stderr, "L%u: unknown instruction %s\n", line_number, op);
-exit(EXIT_FAILURE);
+  while (op[i].opcode)
+    {
+      if (strcmp(op[i].opcode, str) == 0)
+	{
+	  /* if match found, run the function */
+	  op[i].f(stack, line_number);
+	  return;
+	}
+      i++;
+    }
+
+  fprintf(stderr, "L%d:: unknown instruction %s\n", line_number, str);
+  status = EXIT_FAILURE;
 }

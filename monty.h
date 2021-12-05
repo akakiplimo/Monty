@@ -1,10 +1,6 @@
 #ifndef MONTY_H
 #define MONTY_H
 #define  _POSIX_C_SOURCE 200809L
-#define _DEFAULT_SOURCE
-
-#define STACK 0
-#define QUEUE 1
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -13,18 +9,21 @@
 #include <ctype.h>
 
 /**
- * var_s - struct for the main variables of the Monty Interpreter
- * @queue: flag to determine if in stack or queue mode
- * @stack_len: length of the stack
+ * struct help - argument for the current opcode
+ * @data_struct: stack mode, stack (default) and queue
+ * @argument: the arguments of the string
+ *
+ * Description: global structure used to pass data around the functions easily
  */
-typedef struct var_s
+typedef struct help
 {
-  int queue;
-  size_t stack_len;
-} var_t;
+  int data_struct;
+  char *argument;
+} help;
+help global;
 
 /* variable structure to hold flag for queue or stack length */
-extern var_t var;
+extern int status;
 
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
@@ -56,13 +55,15 @@ typedef struct instruction_s
   void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
-void free_stack(int status, void *arg);
-void free_lineptr(int status, void *arg);
-void myfile_close(int status, void *arg);
-void call_op(char *op, stack_t **stack, unsigned int line_number);
-
+void free_stack(stack_t *stack);
 stack_t *add_node(stack_t **stack, const int n);
-void op_push(stack_t **stack, unsigned int line_number);
-void op_pall(stack_t **stack, unsigned int line_number);
+stack_t *queue_node(stack_t **stack, const int n);
+size_t print_stack(const stack_t *stack);
+
+int isDigit(char *str);
+
+void call_op(stack_t **stack, char *str, unsigned int line_number);
+void push(stack_t **stack, unsigned int line_number);
+void pall(stack_t **stack, unsigned int line_number);
 
 #endif /* MONTY_H */
